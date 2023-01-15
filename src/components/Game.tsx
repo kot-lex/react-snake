@@ -13,7 +13,14 @@ const DIRECTIONS = {
     LEFT: -1,
 };
 
-const hasIntrersection = (snake: any, target: any)  => {
+const Crashed = (props: any) => {
+    return <div className="Crashed">
+        <h2>Crashed 🔥</h2>
+        <button onClick={props.onRestart}>Start again</button>
+    </div>
+}
+
+const hasIntrersection = (snake: number[][], target: number[]): boolean  => {
     return snake.some((item: any) => item[0] === target[0] && item[1] === target[1])
 }
 
@@ -42,7 +49,6 @@ function moveSnake(direction: number | false, snake: number[][], size: number[],
     const headPosition = snake[0];
     let newHeadPosition: any;
     let isCrash = false;
-    const secondSegment = snake[1];
     if (!direction) {
         return snake;
     }
@@ -78,11 +84,12 @@ function moveSnake(direction: number | false, snake: number[][], size: number[],
         break;
     }
 
+    // Crashed into wall or into snake itself
     if (isCrash || hasIntrersection(snake, newHeadPosition)) {
         return false;
     }
 
-    // If target is not hit do not add element
+    // If target is not hit keep the same length
     if (!checkForHit([newHeadPosition], target)) {
         snake.pop();
     }
@@ -97,12 +104,11 @@ const Game = () => {
     const rightPressed: boolean = useKeyPress('ArrowRight');
     const upPressed: boolean = useKeyPress('ArrowUp');
     const downPressed: boolean = useKeyPress('ArrowDown');
-    console.log('Game RENDERED');
-    console.log('leftPressed', leftPressed);
+    
     const moveTo = (leftPressed && DIRECTIONS.LEFT) ||
     (rightPressed && DIRECTIONS.RIGHT) ||
     (upPressed && DIRECTIONS.UP) ||
-    (downPressed && DIRECTIONS.DOWN);
+    (downPressed && DIRECTIONS.DOWN) || null;
 
     const initialSnake = [[0, 0]]
     const [snake, setSnake] = useState(initialSnake);
@@ -119,17 +125,24 @@ const Game = () => {
             
     }
 
-    console.log(moveTo);
+    const restartHandler = () => {
+        setScore(0);
+        setSpeed(initialSpeed);
+        setSnake(initialSnake);
+        setTargetPosition(getTargetPosition(size, initialSnake));
+        setIsCrash(false);
+    }
+
     useEffect(() => {
-
-    console.log(moveTo);
-
-        if (moveTo !== false) {
-            // check if direction is alloed one (cannot move in the opposite direction)
+        if (isCrash) {
+            return;
+        }
+        if (moveTo !== null) {
+            // check if direction is allowed one (cannot move in the opposite direction)
             if (direction && (Math.abs(direction) === Math.abs(moveTo))) {
                 return;
             }
-            console.log(moveTo);
+            
             setDirection(moveTo);
             
         }
@@ -148,7 +161,6 @@ const Game = () => {
             } else {
                 setIsCrash(true)
             }
-            // timeout = setTimeout(() => doMove(), 1000);
         }
         if (direction) {
             doMove();
@@ -180,10 +192,7 @@ const Game = () => {
 
     useEffect(() => {
         if(isCrash) {
-            setScore(0);
             setDirection(null);
-            setSpeed(initialSpeed);
-            setSnake(initialSnake);
         }
     }, [isCrash])
     return <div className="Game" style={{
@@ -192,7 +201,8 @@ const Game = () => {
     }}>
         <Snake step={step} snake={snake} />
         <Target step={step} position={targetPosition} />
-        <Info score={score} isCrash={isCrash} />
+        <Info score={score} />
+        {isCrash && <Crashed onRestart={restartHandler} /> }
     </div>
 }
 

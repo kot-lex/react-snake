@@ -1,4 +1,11 @@
 .Game {
     background: #76b5c5;
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.Crashed {
+    text-align: center;
 }
