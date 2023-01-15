@@ -1,20 +1,28 @@
-import { useState } from "react";
+import './Snake.css';
 
-function SnakeSegment({ position, step, index }: any) {
-    return <div style={{
-        width: '20px',
-        height: '20px',
-        backgroundColor: '#eab676',
-        textAlign: 'center',
-        'position': 'absolute',
+type SnakeSegmentProps = {
+    position: number[],
+    step: number,
+}
+
+function SnakeSegment({ position, step }: SnakeSegmentProps) {
+    return <div className="SnakeSegment" style={{
+        width: step+'px',
+        height: step+'px',
         left: position[0]*step+'px',
         top: position[1]*step+'px',
     }}></div>
 }
-function Snake(props: any) {
+
+type SnakeProps = {
+    snake: number[][],
+    step: number
+};
+
+function Snake(props: SnakeProps) {
     const { snake, step } = props;
     return <>
-    {snake.map((segment: number[], i: number) => <SnakeSegment position={segment} step={step} key={i} index={i} />)}
+    {snake.map((segment, i) => <SnakeSegment position={segment} step={step} key={i} />)}
     </>
 }
 
