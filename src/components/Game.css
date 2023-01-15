@@ -8,4 +8,5 @@
 
 .Crashed {
     text-align: center;
+    z-index: 999;
 }

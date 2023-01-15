@@ -17,6 +17,12 @@ type CrashedProps = {
     onRestart: () => void
 }
 const Crashed = (props: CrashedProps) => {
+    const enterPressed = useKeyPress('Enter');
+    useEffect(() => {
+        if (enterPressed) {
+            props.onRestart();
+        }
+    }, [enterPressed]);
     return <div className="Crashed">
         <h2>Crashed 🔥</h2>
         <button onClick={props.onRestart}>Start again</button>
