@@ -1,4 +1,8 @@
-const Target = (props: any) => {
+type TargetProps = {
+    position: number[],
+    step: number;
+}
+const Target = (props: TargetProps) => {
     const { position, step } = props;
     return <div style={{
         width: step+'px',

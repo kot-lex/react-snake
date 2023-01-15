@@ -13,7 +13,10 @@ const DIRECTIONS = {
     LEFT: -1,
 };
 
-const Crashed = (props: any) => {
+type CrashedProps = {
+    onRestart: () => void
+}
+const Crashed = (props: CrashedProps) => {
     return <div className="Crashed">
         <h2>Crashed 🔥</h2>
         <button onClick={props.onRestart}>Start again</button>
@@ -38,14 +41,14 @@ function getTargetPosition(size: number[], snake: number[][]): number[] {
         
 }
 
-const checkForHit = (snake:any, target:any) => {
+const checkForHit = (snake: number[][], target: number[]) => {
     if (!snake[0] || !target) {
         return false;
     }
     return (target[0] === snake[0][0]) && (target[1] === snake[0][1]);
 }
 
-function moveSnake(direction: number | false, snake: number[][], size: number[], step: number, target: any): any {
+function moveSnake(direction: number | false, snake: number[][], size: number[], step: number, target: number[]): any {
     const headPosition = snake[0];
     let newHeadPosition: any;
     let isCrash = false;
