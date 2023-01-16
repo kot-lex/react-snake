@@ -1,22 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
-import useKeyPress from '../useKeyPress';
+import useKeyPress from '../../useKeyPress';
 import './Game.css';
-import Info from './Info';
-import Snake from './Snake';
-import Target from './Target';
-
-
-const DIRECTIONS = {
-    UP: 2,
-    DOWN: -2,
-    RIGHT: 1,
-    LEFT: -1,
-};
+import Info from '../Info/Info';
+import Snake from '../Snake/Snake';
+import Target from '../Target/Target';
+import { checkForHit, DIRECTIONS, getTargetPosition, moveSnake, Snake as SnakeType } from './helpers';
 
 type CrashedProps = {
     onRestart: () => void
 }
-const Crashed = (props: CrashedProps) => {
+export const Crashed = (props: CrashedProps) => {
     const enterPressed = useKeyPress('Enter');
     useEffect(() => {
         if (enterPressed) {
@@ -29,81 +22,6 @@ const Crashed = (props: CrashedProps) => {
     </div>
 }
 
-const hasIntrersection = (snake: number[][], target: number[]): boolean  => {
-    return snake.some((item: any) => item[0] === target[0] && item[1] === target[1])
-}
-
-function getTargetPosition(size: number[], snake: number[][]): number[] {
-    const randonPoint = [
-        Math.floor(Math.random() * size[0]),
-        Math.floor(Math.random() * size[1])
-    ];
-
-    if (hasIntrersection(snake, randonPoint)) {
-        return getTargetPosition(size, snake);
-    } else {
-    return randonPoint;
-    }
-        
-}
-
-const checkForHit = (snake: number[][], target: number[]) => {
-    if (!snake[0] || !target) {
-        return false;
-    }
-    return (target[0] === snake[0][0]) && (target[1] === snake[0][1]);
-}
-
-function moveSnake(direction: number | false, snake: number[][], size: number[], step: number, target: number[]): any {
-    const headPosition = snake[0];
-    let newHeadPosition: any;
-    let isCrash = false;
-    if (!direction) {
-        return snake;
-    }
-
-    switch(direction) {
-        case DIRECTIONS.LEFT:
-            if (headPosition[0]-1<0) {
-                isCrash = true;
-            }
-
-            newHeadPosition = [headPosition[0]-1, headPosition[1]];
-        break;
-        case DIRECTIONS.RIGHT:
-            if (headPosition[0]+1>=size[0]) {
-                isCrash = true;
-            }
-            
-            newHeadPosition = [headPosition[0]+1, headPosition[1]];
-        break;
-        case DIRECTIONS.UP:
-            if (headPosition[1]-1<0) {
-                isCrash = true;
-            }
-            
-            newHeadPosition = [headPosition[0], headPosition[1]-1];
-        break;
-        case DIRECTIONS.DOWN:
-            if (headPosition[1]+1>=size[1]) {
-                isCrash = true;
-            }
-            
-            newHeadPosition = [headPosition[0], headPosition[1]+1];
-        break;
-    }
-
-    // Crashed into wall or into snake itself
-    if (isCrash || hasIntrersection(snake, newHeadPosition)) {
-        return false;
-    }
-
-    // If target is not hit keep the same length
-    if (!checkForHit([newHeadPosition], target)) {
-        snake.pop();
-    }
-    return [newHeadPosition, ...snake];
-}
 
 const Game = () => {
     const size = [30, 30];
@@ -123,11 +41,11 @@ const Game = () => {
     const [snake, setSnake] = useState(initialSnake);
     const [score, setScore] = useState(0);
     const [isCrash, setIsCrash] = useState(false);
-    const [direction, setDirection] = useState<any>();
+    const [direction, setDirection] = useState<number | null>(null);
     const [speed, setSpeed] = useState<number>(initialSpeed)
     const [targetPosition, setTargetPosition] = useState(getTargetPosition(size, snake));
 
-    const processHit = (newSnake: number[][]) => {
+    const processHit = (newSnake: SnakeType) => {
         setTargetPosition(getTargetPosition(size, newSnake));
         setSpeed(initialSpeed / Math.ceil((score+1)/10));
         setScore(score+1);
@@ -177,7 +95,7 @@ const Game = () => {
     }, [direction]);
 
     useEffect(() => {
-        let timeout: any;
+        let timeout: ReturnType<typeof setTimeout>;
         const doMove = () => {
             let newSnake = moveSnake(direction, snake, size, step, targetPosition);
 
