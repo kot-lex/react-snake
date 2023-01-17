@@ -23,6 +23,11 @@ export const Crashed = (props: CrashedProps) => {
     </div>
 }
 
+export const StartInfo = () => {
+    return (<div className="StartInfo">
+        Press arrow key to start
+    </div>)
+}
 
 const Game = () => {
     // Field size
@@ -138,6 +143,7 @@ const Game = () => {
         <Snake step={step} snake={snake} />
         <Target step={step} position={targetPosition} />
         <Info score={score} />
+        {!isCrash && !direction && <StartInfo />}
         {isCrash && <Crashed onRestart={restartHandler} /> }
     </div>
 }
