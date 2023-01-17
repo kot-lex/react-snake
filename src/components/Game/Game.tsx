@@ -31,7 +31,7 @@ export const StartInfo = () => {
 
 const Game = () => {
     // Field size
-    const size = [30, 30];
+    const size = [25, 25];
     // Snake step in pixels
     const step = 20;
     // Delay between steps in ms
