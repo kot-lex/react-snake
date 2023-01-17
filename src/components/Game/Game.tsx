@@ -36,10 +36,10 @@ const Game = () => {
     const step = 20;
     // Delay between steps in ms
     const initialSpeed = 200;
-    const leftPressed: boolean = useKeyPress('ArrowLeft');
-    const rightPressed: boolean = useKeyPress('ArrowRight');
-    const upPressed: boolean = useKeyPress('ArrowUp');
-    const downPressed: boolean = useKeyPress('ArrowDown');
+    const leftPressed: boolean = useKeyPress('ArrowLeft', true);
+    const rightPressed: boolean = useKeyPress('ArrowRight', true);
+    const upPressed: boolean = useKeyPress('ArrowUp', true);
+    const downPressed: boolean = useKeyPress('ArrowDown', true);
     
     const moveTo = (leftPressed && DIRECTIONS.LEFT) ||
     (rightPressed && DIRECTIONS.RIGHT) ||
