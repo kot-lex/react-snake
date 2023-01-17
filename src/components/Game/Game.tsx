@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import useKeyPress from '../../useKeyPress';
 import './Game.css';
 import Info from '../Info/Info';
@@ -15,6 +15,7 @@ export const Crashed = (props: CrashedProps) => {
         if (enterPressed) {
             props.onRestart();
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [enterPressed]);
     return <div className="Crashed">
         <h2>Crashed 🔥</h2>
@@ -24,8 +25,11 @@ export const Crashed = (props: CrashedProps) => {
 
 
 const Game = () => {
+    // Field size
     const size = [30, 30];
+    // Snake step in pixels
     const step = 20;
+    // Delay between steps in ms
     const initialSpeed = 200;
     const leftPressed: boolean = useKeyPress('ArrowLeft');
     const rightPressed: boolean = useKeyPress('ArrowRight');
@@ -73,6 +77,8 @@ const Game = () => {
             setDirection(moveTo);
             
         }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [moveTo]);
 
     useEffect(() => {
@@ -92,6 +98,8 @@ const Game = () => {
         if (direction) {
             doMove();
         }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [direction]);
 
     useEffect(() => {
@@ -115,6 +123,7 @@ const Game = () => {
             timeout = setTimeout(() => doMove(), speed);
         }
         return () => { clearTimeout(timeout) }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [snake]);
 
     useEffect(() => {

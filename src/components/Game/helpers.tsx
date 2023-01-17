@@ -1,6 +1,3 @@
-import { useEffect } from "react";
-import useKeyPress from "../../useKeyPress";
-
 export const DIRECTIONS = {
     UP: 2,
     DOWN: -2,

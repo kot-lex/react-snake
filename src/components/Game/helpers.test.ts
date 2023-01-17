@@ -1,4 +1,3 @@
-import React from 'react';
 import { hasIntrersection, getTargetPosition } from './helpers';
 
 const smallSnake = [[0, 1], [0, 2]];
