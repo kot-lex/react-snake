@@ -10,3 +10,14 @@
     text-align: center;
     z-index: 999;
 }
+
+.Crashed h2 {
+    margin-bottom: 10px;
+}
+
+.Crashed button {
+    background: #f2f0f0;
+    border: none;
+    padding: 7px 15px;
+    border-radius: 20px;
+}

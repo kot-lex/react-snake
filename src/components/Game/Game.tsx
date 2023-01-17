@@ -18,7 +18,7 @@ export const Crashed = (props: CrashedProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [enterPressed]);
     return <div className="Crashed">
-        <h2>Crashed 🔥</h2>
+        <h2>Crashed</h2>
         <button onClick={props.onRestart}>Start again</button>
     </div>
 }
