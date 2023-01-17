@@ -28,6 +28,14 @@
   color: #61dafb;
 }
 
+.AppHeader h1 { 
+  text-align: center;
+}
+
+.AppHeader p {
+  line-height: 130%;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
